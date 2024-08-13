@@ -3,8 +3,10 @@
     public class Perfil
     {
         public int Id_Perfil { get; set; }
+        public int Id_Usuario { get; set; }
         public string Foto_Perfil { get; set; }
         public string Biografia_Perfil { get; set; }
-        public DateTime Data_Atualização_Perfil { get; set; } //Mudar banco
+        public DateTime Data_Atualização_Perfil { get; set; }
+        public Usuario Usuario { get; set; }
     }
 }

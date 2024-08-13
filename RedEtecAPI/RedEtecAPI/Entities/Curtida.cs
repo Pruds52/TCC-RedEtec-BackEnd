@@ -1,12 +1,12 @@
 ﻿namespace RedEtecAPI.Entities
 {
-    public class Curtidas
+    public class Curtida
     {
-        public int Id_Curtidas { get; set; }
-        public int Id_Usuarios { get; set; }
+        public int Id_Curtida { get; set; }
+        public int Id_Usuario { get; set; }
         public int Id_Postagem { get; set; }
         public DateTime Data_Curtida { get; set; }
-        public Usuarios Usuarios { get; set; }
+        public Usuario Usuario { get; set; }
         public Postagem Postagem { get; set; }
     }
 }

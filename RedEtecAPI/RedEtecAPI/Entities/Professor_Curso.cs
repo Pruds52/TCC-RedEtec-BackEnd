@@ -5,7 +5,7 @@
         public int Id_Professor_Curso { get; set; }
         public int Id_Cursos { get; set; }
         public int Id_Professor { get; set; }
-        public Cursos Cursos { get; set; }
-        public Professores Professores { get; set; }
+        public Curso Curso { get; set; }
+        public Professor Professor { get; set; }
     }
 }
