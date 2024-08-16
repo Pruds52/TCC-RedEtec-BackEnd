@@ -11,7 +11,6 @@ namespace RedEtecAPI.Mapping
             builder.HasKey(p => p.Id_Usuario);
 
             builder.Property(p => p.Id_Usuario).IsRequired();
-            builder.Property(p => p.Id_Matricula).IsRequired();
             builder.Property(p => p.Nome_Usuario).IsRequired().HasMaxLength(45);
             builder.Property(p => p.CPF_Usuario).IsRequired().HasMaxLength(11);
             builder.Property(p => p.Data_Nascimento_Usuario).IsRequired();
