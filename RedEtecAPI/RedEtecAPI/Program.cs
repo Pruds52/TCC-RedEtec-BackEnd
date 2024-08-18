@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using RedEtecAPI.Data;
+using RedEtecAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RedEtecAPIContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("RedEtecAPIContext"), new MySqlServerVersion(new Version(8, 0, 36))));
+
+builder.Services.AddScoped<UsuarioService>();
 
 // Add services to the container.
 

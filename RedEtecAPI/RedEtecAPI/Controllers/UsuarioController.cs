@@ -2,29 +2,30 @@
 using Microsoft.EntityFrameworkCore;
 using RedEtecAPI.Data;
 using RedEtecAPI.Entities;
+using RedEtecAPI.Services;
 using System;
 
 [ApiController]
 [Route("api/[controller]")]
 public class UsuariosController : ControllerBase
 {
-    private readonly RedEtecAPIContext _context;
+    private readonly UsuarioService _usuarioService;
 
-    public UsuariosController(RedEtecAPIContext context)
+    public UsuariosController(UsuarioService usuarioService)
     {
-        _context = context;
+        _usuarioService = usuarioService;  
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
     {
-        return await _context.Usuario.ToListAsync();
+        return await _usuarioService.GetAllAsync() ;
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Usuario>> GetUsuario(int id)
     {
-        var usuario = await _context.Usuario.FindAsync(id);
+        var usuario = await _usuarioService.GetByIdAsync(id);
 
         if (usuario == null)
         {
@@ -37,8 +38,7 @@ public class UsuariosController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
     {
-        _context.Usuario.Add(usuario);
-        await _context.SaveChangesAsync();
+        await _usuarioService.CreateAsync(usuario);
 
         return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id_Usuario }, usuario);
     }
@@ -48,56 +48,35 @@ public class UsuariosController : ControllerBase
     {
         if (id != usuario.Id_Usuario)
         {
-            return BadRequest();
+            return BadRequest("Os IDs não são correspondentes.");
         }
 
-        _context.Entry(usuario).State = EntityState.Modified;
+        await _usuarioService.EditAsync(usuario);
 
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!UsuarioExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
+        return Ok("Usuario atualizado.");
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUsuario(int id)
     {
-        var usuario = await _context.Usuario.FindAsync(id);
+        var usuario = await _usuarioService.GetByIdAsync(id);
+
         if (usuario == null)
         {
             return NotFound();
         }
 
-        _context.Usuario.Remove(usuario);
-        await _context.SaveChangesAsync();
+        await _usuarioService.DeleteAsync(usuario);
 
         return NoContent();
-    }
-
-    private bool UsuarioExists(int id)
-    {
-        return _context.Usuario.Any(e => e.Id_Usuario == id);
     }
 
     [HttpPost("login")]
     public IActionResult LoginUsuario(string username, string password)
     {
-        var existe = _context.Usuario.Any(p => p.Nome_Usuario == username && p.Senha_Usuario == password);
+        var usuarioExiste = _usuarioService.LoginAsync(username, password);
 
-        if (existe) 
+        if (usuarioExiste) 
             return Ok("Login realizado com sucesso.");
 
         return BadRequest("Usuário ou senha incorreto.");
