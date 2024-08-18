@@ -91,4 +91,15 @@ public class UsuariosController : ControllerBase
     {
         return _context.Usuario.Any(e => e.Id_Usuario == id);
     }
+
+    [HttpPost("login")]
+    public IActionResult LoginUsuario(string username, string password)
+    {
+        var existe = _context.Usuario.Any(p => p.Nome_Usuario == username && p.Senha_Usuario == password);
+
+        if (existe) 
+            return Ok("Login realizado com sucesso.");
+
+        return BadRequest("Usuário ou senha incorreto.");
+    }
 }
