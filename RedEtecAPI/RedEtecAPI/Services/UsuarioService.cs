@@ -47,9 +47,9 @@ namespace RedEtecAPI.Services
             await _context.SaveChangesAsync();
         }
 
-        public bool LoginAsync(string username, string password)
+        public async Task<bool> LoginAsync(string username, string password)
         {
-            var usuarioExiste = _context.Usuario.Any(p => p.Nome_Usuario == username && p.Senha_Usuario == password);
+            var usuarioExiste = await _context.Usuario.AnyAsync(p => p.Nome_Usuario == username && p.Senha_Usuario == password);
 
             return usuarioExiste;
         }

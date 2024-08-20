@@ -72,9 +72,9 @@ public class UsuariosController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult LoginUsuario(string username, string password)
+    public async Task<IActionResult> LoginUsuario(string username, string password)
     {
-        var usuarioExiste = _usuarioService.LoginAsync(username, password);
+        var usuarioExiste = await _usuarioService.LoginAsync(username, password);
 
         if (usuarioExiste) 
             return Ok("Login realizado com sucesso.");
