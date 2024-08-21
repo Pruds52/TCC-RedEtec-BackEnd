@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RedEtecAPI.Data;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
 using System;
+using LoginRequest = RedEtecAPI.Entities.LoginRequest;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -36,7 +38,7 @@ public class UsuariosController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+    public async Task<ActionResult<Usuario>> PostUsuario([FromBody] Usuario usuario)
     {
         await _usuarioService.CreateAsync(usuario);
 
@@ -72,13 +74,13 @@ public class UsuariosController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginUsuario(string username, string password)
+    public async Task<IActionResult> LoginUsuario([FromBody] LoginRequest loginRequest)
     {
-        var usuarioExiste = await _usuarioService.LoginAsync(username, password);
+        var usuarioExiste = await _usuarioService.LoginAsync(loginRequest.Username, loginRequest.Password);
 
-        if (usuarioExiste) 
-            return Ok("Login realizado com sucesso.");
+        if (usuarioExiste)
+            return Ok(new { message = "Login realizado com sucesso." });
 
-        return BadRequest("Usuário ou senha incorreto.");
+        return BadRequest(new { error = "Usuário ou senha incorreto." });
     }
 }
