@@ -8,8 +8,8 @@
         public string Mensagem { get; set; }
         public string Localizacao_Midia { get; set; }
         public DateTime Data_Mensagem { get; set; }
-        public ICollection<Anexo> Anexos { get; set; }
-        public Usuario Usuario { get; set; }
+        public virtual ICollection<Anexo> Anexos { get; set; }
+        public virtual Usuario Usuario { get; set; }
 
         public Mensagem_Privada()
         {

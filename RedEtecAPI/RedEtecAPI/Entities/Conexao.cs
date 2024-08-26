@@ -6,7 +6,7 @@
         public int Solicitacao_Enviada { get; set; }
         public int Solicitacao_Solicitada { get; set; }
         public DateTime Data_Conexao { get; set; }
-        public Usuario Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; }
 
     }
 }

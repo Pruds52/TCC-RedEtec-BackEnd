@@ -19,6 +19,50 @@ namespace RedEtecAPI.Mapping
             builder.Property(p => p.Senha_Usuario).IsRequired().HasMaxLength(100);
             builder.Property(p => p.Sexo_Usuario).IsRequired();
             builder.Property(p => p.Nivel_Acesso).IsRequired();
+
+            builder.HasMany(p => p.Matriculas)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario);
+
+            builder.HasMany(p => p.Comentarios)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario);
+
+            builder.HasMany(p => p.Curtidas)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario);
+
+            builder.HasMany(p => p.Postagens)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario);
+
+            builder.HasMany(p => p.Notificacoes)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario);
+
+            builder.HasMany(p => p.Integrante_Grupos)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario);
+
+            builder.HasMany(p => p.Conexoes)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Solicitacao_Enviada);
+
+            builder.HasMany(p => p.Conexoes)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Solicitacao_Solicitada);
+
+            builder.HasMany(p => p.Mensagem_Privadas)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario_Emissor);
+
+            builder.HasMany(p => p.Mensagem_Privadas)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario_Receptor);
+
+            builder.HasMany(p => p.Perfis)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.Id_Usuario);
         }
     }
 }

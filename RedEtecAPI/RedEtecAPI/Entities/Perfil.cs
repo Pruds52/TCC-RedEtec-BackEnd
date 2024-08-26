@@ -7,6 +7,6 @@
         public string Foto_Perfil { get; set; }
         public string Biografia_Perfil { get; set; }
         public DateTime Data_Atualização_Perfil { get; set; }
-        public Usuario Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

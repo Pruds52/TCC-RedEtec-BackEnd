@@ -9,7 +9,7 @@ namespace RedEtecAPI.Entities
         public string Tipo_Notificacao { get; set; }
         public string Mensagem_Notificacao { get; set; }
         public DateTime Data_Notificacao { get; set; }
-        public bool Lida_Notificacao { get; set; }
-        public Usuario Usuario { get; set; }
+        public bool? Lida_Notificacao { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }
