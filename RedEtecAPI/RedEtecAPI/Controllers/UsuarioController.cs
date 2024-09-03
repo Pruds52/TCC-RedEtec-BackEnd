@@ -5,7 +5,6 @@ using RedEtecAPI.Data;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
 using System;
-using LoginRequest = RedEtecAPI.Entities.LoginRequest;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -46,7 +45,7 @@ public class UsuariosController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
+    public async Task<ActionResult> PutUsuario(int id, Usuario usuario)
     {
         if (id != usuario.Id_Usuario)
         {
@@ -59,7 +58,7 @@ public class UsuariosController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUsuario(int id)
+    public async Task<ActionResult> DeleteUsuario(int id)
     {
         var usuario = await _usuarioService.GetByIdAsync(id);
 
@@ -74,9 +73,9 @@ public class UsuariosController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginUsuario([FromBody] LoginRequest loginRequest)
+    public async Task<ActionResult> LoginUsuario([FromBody] Login login)
     {
-        var usuarioExiste = await _usuarioService.LoginAsync(loginRequest.Username, loginRequest.Password);
+        var usuarioExiste = await _usuarioService.LoginAsync(login.Username, login.Password);
 
         if (usuarioExiste)
             return Ok(new { message = "Login realizado com sucesso." });

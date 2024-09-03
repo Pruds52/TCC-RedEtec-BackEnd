@@ -22,8 +22,7 @@ namespace RedEtecAPI.Services
 
         public async Task<Usuario> GetByIdAsync(int id)
         {
-            return 
-                 await _context.Usuario.FindAsync(id);
+            return await _context.Usuario.FindAsync(id);
         }
 
         public async Task CreateAsync(Usuario usuario)

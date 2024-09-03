@@ -12,6 +12,7 @@ namespace RedEtecAPI.Mapping
 
             builder.Property(p => p.Id_Professor).IsRequired();
             builder.Property(p => p.Nome_Professor).IsRequired().HasMaxLength(45);
+            builder.Property(p => p.Senha_Professor).IsRequired().HasMaxLength(30);
 
             builder.HasMany(p => p.Professor_Cursos)
                .WithOne(p => p.Professor)
