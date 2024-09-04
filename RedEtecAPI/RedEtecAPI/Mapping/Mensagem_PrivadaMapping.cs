@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Mensagem_Privada> builder)
         {
+            builder.ToTable("Mensagem_Privada");
             builder.HasKey(p => p.Id_Mensagem_Privada);
 
             builder.Property(p => p.Id_Mensagem_Privada).IsRequired();

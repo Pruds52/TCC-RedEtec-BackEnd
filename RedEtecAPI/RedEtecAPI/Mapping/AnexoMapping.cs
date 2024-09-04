@@ -9,6 +9,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Anexo> builder)
         {
+            builder.ToTable("Anexo");
             builder.HasKey(p => p.Id_Anexo);
 
             builder.Property(p => p.Id_Anexo).IsRequired();

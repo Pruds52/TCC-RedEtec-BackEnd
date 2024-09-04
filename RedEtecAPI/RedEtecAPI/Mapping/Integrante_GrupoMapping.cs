@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Integrante_Grupo> builder)
         {
+            builder.ToTable("Integrante_Grupo");
             builder.HasKey(p => p.Id_Integrante_Grupo);
 
             builder.Property(p => p.Id_Integrante_Grupo).IsRequired();

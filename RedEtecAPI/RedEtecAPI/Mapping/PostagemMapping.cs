@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Postagem> builder)
         {
+            builder.ToTable("Postagem");
             builder.HasKey(p => p.Id_Postagem);
 
             builder.Property(p => p.Id_Postagem).IsRequired();

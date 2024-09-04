@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
+            builder.ToTable("Usuario");
             builder.HasKey(p => p.Id_Usuario);
 
             builder.Property(p => p.Id_Usuario).IsRequired();

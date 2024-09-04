@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Materia_Curso> builder)
         {
+            builder.ToTable("Materia_Curso");
             builder.HasKey(p => p.Id_Materia_Curso);
 
             builder.Property(p => p.Id_Materia_Curso).IsRequired();

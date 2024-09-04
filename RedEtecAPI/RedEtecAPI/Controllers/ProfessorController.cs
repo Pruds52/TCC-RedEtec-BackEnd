@@ -6,7 +6,7 @@ namespace RedEtecAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProfessorController : ControllerBase
+    public class ProfessorController : Controller
     {
         private readonly ProfessorService _professorService;
 

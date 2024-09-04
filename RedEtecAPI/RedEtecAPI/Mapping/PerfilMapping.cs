@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Perfil> builder)
         {
+            builder.ToTable("Perfil");
             builder.HasKey(p => p.Id_Perfil);
 
             builder.Property(p => p.Id_Perfil).IsRequired();

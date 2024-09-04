@@ -9,6 +9,7 @@ builder.Services.AddDbContext<RedEtecAPIContext>(options =>
 
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<ProfessorService>();
+builder.Services.AddScoped<PostagemService>();
 
 builder.Services.AddCors(options =>
 {

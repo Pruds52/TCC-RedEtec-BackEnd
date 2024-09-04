@@ -1,26 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RedEtecAPI.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
-using System;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UsuariosController : ControllerBase
+public class UsuarioController : Controller
 {
     private readonly UsuarioService _usuarioService;
 
-    public UsuariosController(UsuarioService usuarioService)
+    public UsuarioController(UsuarioService usuarioService)
     {
-        _usuarioService = usuarioService;  
+        _usuarioService = usuarioService;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
+    public async Task<ActionResult<List<Usuario>>> GetUsuarios()
     {
-        return await _usuarioService.GetAllAsync() ;
+        return await _usuarioService.GetAllAsync();
     }
 
     [HttpGet("{id}")]

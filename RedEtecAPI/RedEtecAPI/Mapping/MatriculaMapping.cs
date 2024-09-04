@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Matricula> builder)
         {
+            builder.ToTable("Matricula");
             builder.HasKey(p => p.Id_Matricula);
 
             builder.Property(p => p.Id_Matricula).IsRequired();

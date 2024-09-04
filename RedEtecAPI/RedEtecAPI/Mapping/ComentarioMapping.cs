@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Comentario> builder)
         {
+            builder.ToTable("Comentario");
             builder.HasKey(p => p.Id_Comentario);
 
             builder.Property(p => p.Id_Comentario).IsRequired();

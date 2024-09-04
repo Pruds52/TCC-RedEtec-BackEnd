@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Curtida> builder)
         {
+            builder.ToTable("Curtida");
             builder.HasKey(p => p.Id_Curtida);
 
             builder.Property(p => p.Id_Curtida).IsRequired();

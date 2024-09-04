@@ -8,6 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Notificacao> builder)
         {
+            builder.ToTable("Notificacao");
             builder.HasKey(p => p.Id_Notificacao);
 
             builder.Property(p => p.Id_Notificacao).IsRequired();
