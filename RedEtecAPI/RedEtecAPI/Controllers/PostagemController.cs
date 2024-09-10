@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
 
@@ -64,7 +66,7 @@ namespace RedEtecAPI.Controllers
             return NoContent();
         }
 
-        [HttpGet("Usuario/{usuarioId}")]
+        [HttpGet("usuario/{usuarioId}")]
         public async Task<ActionResult> GetPostagensByUsuario(int usuarioId)
         {
             var postagens = await _postagemService.GetPostagensByUsuarioAsync(usuarioId);
@@ -76,5 +78,26 @@ namespace RedEtecAPI.Controllers
 
             return Ok(postagens);
         }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("Nenhum arquivo selecionado.");
+
+            var client = new MongoClient("mongodb+srv://gabrielribas:051322@cluster0.4eyh8.mongodb.net/");
+
+            var database = client.GetDatabase("Testes-TCC");
+
+            var gridFS = new GridFSBucket(database);
+
+            using (var stream = file.OpenReadStream())
+            {
+                var fileId = await gridFS.UploadFromStreamAsync(file.FileName, stream);
+
+                return Ok(new { id = fileId.ToString() });
+            }
+        }
+
     }
 }
