@@ -35,12 +35,30 @@ namespace RedEtecAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Postagem>> PostPostagem([FromBody] Postagem postagem)
+        public async Task<ActionResult<Postagem>> PostPostagem([FromForm] Postagem postagem, [FromForm] IFormFile file)
         {
+            if (file != null && file.Length != 0)
+            {
+                var client = new MongoClient("mongodb+srv://gabrielribas:051322@cluster0.4eyh8.mongodb.net/");
+                var database = client.GetDatabase("Testes-TCC");
+                var gridFS = new GridFSBucket(database);
+
+                using (var stream = file.OpenReadStream())
+                {
+                    var fileId = await gridFS.UploadFromStreamAsync(file.FileName, stream);
+                    postagem.Localizacao_Midia_Postagem = fileId.ToString(); // Se Postagem tiver um campo para armazenar o ID do arquivo
+                }
+            }
+
+            postagem.Data_Postagem = DateTime.Now;
+
+            postagem.Id_Usuario = 7;
+
             await _postagemService.CreateAsync(postagem);
 
             return CreatedAtAction(nameof(GetPostagem), new { id = postagem.Id_Postagem }, postagem);
         }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult> PutPostagem(int id, Postagem postagem)
