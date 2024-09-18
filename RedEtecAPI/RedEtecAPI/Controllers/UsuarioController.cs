@@ -33,7 +33,7 @@ public class UsuarioController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<Usuario>> PostUsuario([FromBody] Usuario usuario)
+    public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
     {
         await _usuarioService.CreateAsync(usuario);
 
