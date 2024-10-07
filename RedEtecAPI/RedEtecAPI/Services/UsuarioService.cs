@@ -15,9 +15,9 @@ namespace RedEtecAPI.Services
             _context = context;
         }
 
-        public async Task<bool> LoginAsync(string username, string password)
+        public async Task<Usuario> LoginAsync(string username, string password)
         {
-            var usuarioExiste = await _context.Usuarios.AnyAsync(p => p.Nome_Usuario == username && p.Senha_Usuario == password);
+            var usuarioExiste = await _context.Usuarios.Where(p => p.Nome_Usuario == username && p.Senha_Usuario == password).FirstAsync();
 
             return usuarioExiste;
         }

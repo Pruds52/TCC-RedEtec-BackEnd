@@ -1,16 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 [ApiController]
 [Route("api/[controller]")]
 public class UsuarioController : Controller
 {
     private readonly UsuarioService _usuarioService;
+    private readonly IConfiguration _configuration;
 
-    public UsuarioController(UsuarioService usuarioService)
+
+    public UsuarioController(UsuarioService usuarioService, IConfiguration configuration)
     {
         _usuarioService = usuarioService;
+        _configuration = configuration;
     }
 
     [HttpGet]
@@ -71,11 +80,49 @@ public class UsuarioController : Controller
     [HttpPost("login")]
     public async Task<ActionResult> LoginUsuario([FromBody] Login login)
     {
-        var usuarioExiste = await _usuarioService.LoginAsync(login.Username, login.Password);
+        var usuario = await _usuarioService.LoginAsync(login.Username, login.Password);
 
-        if (usuarioExiste)
-            return Ok(new { message = "Login realizado com sucesso." });
+        if (usuario != null)
+        {
+            var token = GenerateJwtToken(usuario.Id_Usuario);
+            return Ok(new { token, message = "Login realizado com sucesso." });
+        }
 
         return BadRequest(new { error = "Usuário ou senha incorreto." });
+    }
+
+    [Authorize]
+    [HttpGet("user-profile")]
+    public IActionResult GetUserProfile()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Pega o ID do token JWT
+
+        if (userId != null)
+        {
+            // Buscar dados do usuário pelo ID
+            return Ok($"Usuário logado com ID: {userId}");
+        }
+
+        return Unauthorized();
+    }
+
+    private string GenerateJwtToken(int userId)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()) // Adicionando o ID do usuário ao token
+        }),
+            Expires = DateTime.UtcNow.AddMinutes(60),
+            Issuer = _configuration["Jwt:Issuer"],
+            Audience = _configuration["Jwt:Audience"],
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 }
