@@ -84,7 +84,7 @@ public class UsuarioController : Controller
 
         if (usuario != null)
         {
-            var token = GenerateJwtToken(usuario.Id_Usuario);
+            var token = GerarTokenJWT(usuario.Id_Usuario);
             return Ok(new { token, message = "Login realizado com sucesso." });
         }
 
@@ -92,21 +92,20 @@ public class UsuarioController : Controller
     }
 
     [Authorize]
-    [HttpGet("user-profile")]
-    public IActionResult GetUserProfile()
+    [HttpGet("getperfil")]
+    public ActionResult RecuperaSessao()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Pega o ID do token JWT
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userId != null)
         {
-            // Buscar dados do usuário pelo ID
             return Ok($"Usuário logado com ID: {userId}");
         }
 
         return Unauthorized();
     }
 
-    private string GenerateJwtToken(int userId)
+    private string GerarTokenJWT(int userId)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
@@ -114,7 +113,7 @@ public class UsuarioController : Controller
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[] {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()) // Adicionando o ID do usuário ao token
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
         }),
             Expires = DateTime.UtcNow.AddMinutes(60),
             Issuer = _configuration["Jwt:Issuer"],
