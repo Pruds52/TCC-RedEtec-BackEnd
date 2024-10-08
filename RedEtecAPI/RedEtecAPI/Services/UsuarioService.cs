@@ -21,5 +21,12 @@ namespace RedEtecAPI.Services
 
             return usuarioExiste;
         }
+
+        public async Task<List<Usuario>> GetContatos(int userId)
+        {
+            var contatos = await _context.Usuarios.Where(p => p.Id_Usuario != userId).ToListAsync();
+
+            return contatos;
+        }
     }
 }

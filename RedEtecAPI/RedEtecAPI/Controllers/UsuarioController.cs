@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Common;
+using RedEtecAPI.Controllers;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,13 +14,11 @@ using System.Text;
 public class UsuarioController : Controller
 {
     private readonly UsuarioService _usuarioService;
-    private readonly IConfiguration _configuration;
-
+    private readonly TokenJWTController _tokenJWTController;
 
     public UsuarioController(UsuarioService usuarioService, IConfiguration configuration)
     {
         _usuarioService = usuarioService;
-        _configuration = configuration;
     }
 
     [HttpGet]
@@ -84,7 +83,7 @@ public class UsuarioController : Controller
 
         if (usuario != null)
         {
-            var token = GerarTokenJWT(usuario.Id_Usuario);
+            var token = _tokenJWTController.GerarTokenJWT(usuario.Id_Usuario);
             return Ok(new { token, message = "Login realizado com sucesso." });
         }
 
@@ -92,36 +91,17 @@ public class UsuarioController : Controller
     }
 
     [Authorize]
-    [HttpGet("getperfil")]
-    public ActionResult RecuperaSessao()
+    [HttpGet("getcontatos")]
+    public async Task<ActionResult> GetContatos()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var usuarioLogado = await _tokenJWTController.RecuperaSessao();
 
-        if (userId != null)
-        {
-            return Ok($"Usuário logado com ID: {userId}");
-        }
+        var contatos = await _usuarioService.GetContatos(usuarioLogado.Id_Usuario);
 
-        return Unauthorized();
+        if (contatos.Count != 0)
+            return Ok(contatos);
+
+        return NoContent();
     }
 
-    private string GerarTokenJWT(int userId)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(new[] {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
-        }),
-            Expires = DateTime.UtcNow.AddMinutes(60),
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"],
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
 }
