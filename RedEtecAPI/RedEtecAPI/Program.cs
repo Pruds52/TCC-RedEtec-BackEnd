@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using RedEtecAPI.Controllers;
 using RedEtecAPI.Data;
 using RedEtecAPI.Services;
 using System.Text;
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<RedEtecAPIContext>(options =>
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<ProfessorService>();
 builder.Services.AddScoped<PostagemService>();
+builder.Services.AddScoped<Mensagem_PrivadaService>();
+builder.Services.AddScoped<TokenJWTController>();
 
 builder.Services.AddCors(options =>
 {

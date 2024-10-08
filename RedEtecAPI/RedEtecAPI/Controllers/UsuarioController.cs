@@ -16,9 +16,10 @@ public class UsuarioController : Controller
     private readonly UsuarioService _usuarioService;
     private readonly TokenJWTController _tokenJWTController;
 
-    public UsuarioController(UsuarioService usuarioService, IConfiguration configuration)
+    public UsuarioController(UsuarioService usuarioService, TokenJWTController tokenJWTController)
     {
         _usuarioService = usuarioService;
+        _tokenJWTController = tokenJWTController;
     }
 
     [HttpGet]
