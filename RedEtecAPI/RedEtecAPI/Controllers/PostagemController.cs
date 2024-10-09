@@ -13,10 +13,12 @@ namespace RedEtecAPI.Controllers
     public class PostagemController : Controller
     {
         private readonly PostagemService _postagemService;
+        private readonly UsuarioService _usuarioService;
 
-        public PostagemController(PostagemService postagemService)
+        public PostagemController(PostagemService postagemService, UsuarioService usuarioService)
         {
             _postagemService = postagemService;
+            _usuarioService = usuarioService;
         }
 
         [HttpGet]
@@ -101,13 +103,16 @@ namespace RedEtecAPI.Controllers
             {
                 var imageUrl = postagens[i].Localizacao_Midia_Postagem;
 
+                var usuario = await _usuarioService.GetByIdAsync(postagens[i].Id_Usuario);
+
                 result.Add(new
                 {
                     postagens[i].Id_Postagem,
                     postagens[i].Legenda_Postagem,
                     postagens[i].Data_Postagem,
                     postagens[i].Id_Usuario,
-                    imageUrl
+                    imageUrl,
+                    usuario.Nome_Usuario
                 });
             }
 

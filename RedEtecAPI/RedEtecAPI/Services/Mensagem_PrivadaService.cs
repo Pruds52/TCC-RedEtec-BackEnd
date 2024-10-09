@@ -15,7 +15,7 @@ namespace RedEtecAPI.Services
 
         public async Task<List<Mensagem_Privada>> GetConversa(int usuarioLogadoId, int contatoId)
         {
-            var mensagens = await _context.Mensagem_Privadas.Where(p => p.Id_Usuario_Emissor == usuarioLogadoId && p.Id_Usuario_Receptor == contatoId).ToListAsync();
+            var mensagens = await _context.Mensagem_Privadas.Where(p => (p.Id_Usuario_Emissor == usuarioLogadoId && p.Id_Usuario_Receptor == contatoId) || (p.Id_Usuario_Emissor == contatoId && p.Id_Usuario_Receptor == usuarioLogadoId)).ToListAsync();
 
             return mensagens;
         }

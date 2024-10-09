@@ -95,9 +95,11 @@ public class UsuarioController : Controller
     [HttpGet("getcontatos")]
     public async Task<ActionResult> GetContatos()
     {
-        var usuarioLogado = await _tokenJWTController.RecuperaSessao();
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        var contatos = await _usuarioService.GetContatos(usuarioLogado.Id_Usuario);
+        var usuario = await _usuarioService.GetByIdAsync(Convert.ToInt32(userId));
+
+        var contatos = await _usuarioService.GetContatos(usuario.Id_Usuario);
 
         if (contatos.Count != 0)
             return Ok(contatos);
