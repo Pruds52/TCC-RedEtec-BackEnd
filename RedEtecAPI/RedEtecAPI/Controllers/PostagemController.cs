@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
+using System.Security.Claims;
 
 namespace RedEtecAPI.Controllers
 {
@@ -38,6 +40,7 @@ namespace RedEtecAPI.Controllers
             return postagem;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Postagem>> PostPostagem([FromForm] Postagem postagem, [FromForm] IFormFile file)
         {
@@ -56,7 +59,9 @@ namespace RedEtecAPI.Controllers
 
             postagem.Data_Postagem = DateTime.Now;
 
-            postagem.Id_Usuario = 7;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            postagem.Id_Usuario = Convert.ToInt32(userId);
 
             await _postagemService.CreateAsync(postagem);
 
