@@ -3,7 +3,7 @@
     public class Professor
     {
         public int Id_Professor { get; set; }
-        public int Nome_Professor { get; set; }
+        public string Nome_Professor { get; set; }
         public string Senha_Professor { get; set; }
         public virtual ICollection<Professor_Curso> Professor_Cursos { get; set; }
         public virtual ICollection<Materia> Materias { get; set; }
