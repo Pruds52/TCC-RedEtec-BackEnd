@@ -15,6 +15,7 @@ builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<ProfessorService>();
 builder.Services.AddScoped<PostagemService>();
 builder.Services.AddScoped<Mensagem_PrivadaService>();
+builder.Services.AddScoped<GrupoService>();
 builder.Services.AddScoped<TokenJWTController>();
 
 builder.Services.AddCors(options =>

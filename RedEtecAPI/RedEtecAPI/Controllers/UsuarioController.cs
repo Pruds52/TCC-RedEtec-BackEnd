@@ -46,7 +46,9 @@ public class UsuarioController : Controller
     {
         await _usuarioService.CreateAsync(usuario);
 
-        return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id_Usuario }, usuario);
+        var token = _tokenJWTController.GerarTokenJWT(usuario.Id_Usuario);
+
+        return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id_Usuario } , usuario);
     }
 
     [HttpPut("{id}")]
