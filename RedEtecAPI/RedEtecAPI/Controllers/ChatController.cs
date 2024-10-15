@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver.GridFS;
+using MongoDB.Driver;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
 using System.Security.Claims;
@@ -39,9 +41,22 @@ namespace RedEtecAPI.Controllers
 
         [Authorize]
         [HttpPost("enviarmensagem")]
-        public async Task<ActionResult> EnviarMensagem([FromBody] Chat chat)
+        public async Task<ActionResult> EnviarMensagem([FromBody] Chat chat, [FromForm] IFormFile file)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (file != null && file.Length != 0)
+            {
+                var client = new MongoClient("mongodb+srv://gabrielribas:051322@cluster0.4eyh8.mongodb.net/");
+                var database = client.GetDatabase("Testes-TCC");
+                var gridFS = new GridFSBucket(database);
+
+                using (var stream = file.OpenReadStream())
+                {
+                    var fileId = await gridFS.UploadFromStreamAsync(file.FileName, stream);
+                    chat.localizacaoMidia = fileId.ToString();
+                }
+            }
 
             var usuario = await _usuarioService.GetByIdAsync(Convert.ToInt32(userId));
 
@@ -50,6 +65,7 @@ namespace RedEtecAPI.Controllers
                 Id_Usuario_Emissor = usuario.Id_Usuario,
                 Id_Usuario_Receptor = chat.receptorId,
                 Mensagem = chat.mensagem,
+                Localizacao_Midia = chat.localizacaoMidia,
                 Data_Mensagem = DateTime.Now
             };
 
