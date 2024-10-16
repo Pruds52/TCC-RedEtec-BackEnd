@@ -1,6 +1,4 @@
-﻿using RedEtecAPI.Entities.Enums;
-
-namespace RedEtecAPI.Entities
+﻿namespace RedEtecAPI.Entities
 {
     public class Usuario
     {
