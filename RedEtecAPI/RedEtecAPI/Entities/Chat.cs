@@ -2,8 +2,9 @@
 {
     public class Chat
     {
-        public int receptorId { get; set; }
-        public string mensagem { get; set; }
-        public string localizacaoMidia { get; set; }
+        public int EmissorId { get; set; }
+        public int ReceptorId { get; set; }
+        public string Mensagem { get; set; }
+        public string LocalizacaoMidia { get; set; }
     }
 }

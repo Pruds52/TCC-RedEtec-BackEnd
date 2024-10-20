@@ -21,7 +21,7 @@ namespace RedEtecAPI.Controllers
         {
             _mensagemPrivadaService = mensagemPrivadaService;
             _tokenJwtController = tokenJWTController;
-            _usuarioService = usuarioService;   
+            _usuarioService = usuarioService;
         }
 
         [Authorize]
@@ -36,7 +36,21 @@ namespace RedEtecAPI.Controllers
 
             conversa = conversa.OrderBy(p => p.Data_Mensagem).ToList();
 
-            return Ok(conversa);
+            var chatCompleto = new List<Chat>();
+
+
+            foreach (var item in conversa)
+            {
+                var mensagem = new Chat();
+                mensagem.EmissorId = item.Id_Usuario_Emissor;
+                mensagem.ReceptorId = item.Id_Usuario_Receptor;
+                mensagem.Mensagem = item.Mensagem;
+                mensagem.LocalizacaoMidia = item.Localizacao_Midia;
+
+                chatCompleto.Add(mensagem);
+            }
+
+            return Ok(chatCompleto);
         }
 
         [Authorize]
@@ -54,7 +68,7 @@ namespace RedEtecAPI.Controllers
                 using (var stream = file.OpenReadStream())
                 {
                     var fileId = await gridFS.UploadFromStreamAsync(file.FileName, stream);
-                    chat.localizacaoMidia = fileId.ToString();
+                    chat.LocalizacaoMidia = fileId.ToString();
                 }
             }
 
@@ -63,15 +77,15 @@ namespace RedEtecAPI.Controllers
             var mensagemPrivada = new Mensagem_Privada
             {
                 Id_Usuario_Emissor = usuario.Id_Usuario,
-                Id_Usuario_Receptor = chat.receptorId,
-                Mensagem = chat.mensagem,
-                Localizacao_Midia = chat.localizacaoMidia,
+                Id_Usuario_Receptor = chat.ReceptorId,
+                Mensagem = chat.Mensagem,
+                Localizacao_Midia = chat.LocalizacaoMidia,
                 Data_Mensagem = DateTime.Now
             };
 
             await _mensagemPrivadaService.CreateAsync(mensagemPrivada);
 
-            return Ok();
+            return Ok("Mensagem Enviada");
         }
     }
 }
