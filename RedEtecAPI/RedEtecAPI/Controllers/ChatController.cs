@@ -42,6 +42,8 @@ namespace RedEtecAPI.Controllers
             foreach (var item in conversa)
             {
                 var mensagem = new Chat();
+
+                mensagem.MensagemId = item.Id_Mensagem_Privada;
                 mensagem.EmissorId = item.Id_Usuario_Emissor;
                 mensagem.ReceptorId = item.Id_Usuario_Receptor;
                 mensagem.Mensagem = item.Mensagem;
@@ -86,6 +88,16 @@ namespace RedEtecAPI.Controllers
             await _mensagemPrivadaService.CreateAsync(mensagemPrivada);
 
             return Ok("Mensagem Enviada");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMensagem(int id)
+        {
+            var mensagem = await _mensagemPrivadaService.GetByIdAsync(id);
+
+            await _mensagemPrivadaService.DeleteAsync(mensagem);
+
+            return Ok("Mensagem excluída.");
         }
     }
 }

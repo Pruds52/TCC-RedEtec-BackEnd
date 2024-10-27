@@ -28,10 +28,13 @@ public class UsuarioController : Controller
         return await _usuarioService.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Usuario>> GetUsuario(int id)
+    [Authorize]
+    [HttpGet("getusuario")]
+    public async Task<ActionResult<Usuario>> GetUsuario()
     {
-        var usuario = await _usuarioService.GetByIdAsync(id);
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var usuario = await _usuarioService.GetByIdAsync(Convert.ToInt32(userId));
 
         if (usuario == null)
         {
