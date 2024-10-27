@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Protocol.Plugins;
@@ -29,9 +30,11 @@ namespace RedEtecAPI.Controllers
         {
             var userId = RecuperaSessao();
 
-            if (userId != null)
+            var usuario = _usuarioService.GetByIdAsync(Convert.ToInt32(userId));
+
+            if (usuario != null)
             {
-                return Ok($"Usuário logado com ID: {userId}");
+                return Ok(usuario);
             }
 
             return Unauthorized();
