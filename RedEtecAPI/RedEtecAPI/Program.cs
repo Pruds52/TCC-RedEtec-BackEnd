@@ -17,6 +17,7 @@ builder.Services.AddScoped<PostagemService>();
 builder.Services.AddScoped<Mensagem_PrivadaService>();
 builder.Services.AddScoped<GrupoService>();
 builder.Services.AddScoped<TokenJWTController>();
+builder.Services.AddScoped<PerfilService>();
 
 builder.Services.AddCors(options =>
 {
