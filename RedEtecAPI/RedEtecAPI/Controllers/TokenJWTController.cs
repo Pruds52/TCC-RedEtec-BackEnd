@@ -28,13 +28,11 @@ namespace RedEtecAPI.Controllers
         [HttpGet("getperfil")]
         public ActionResult ValidarSessao()
         {
-            var userId = RecuperaSessao();
+            var user = RecuperaSessao();
 
-            var usuario = _usuarioService.GetByIdAsync(Convert.ToInt32(userId));
-
-            if (usuario != null)
+            if (user != null)
             {
-                return Ok(usuario);
+                return Ok(user);
             }
 
             return Unauthorized();
