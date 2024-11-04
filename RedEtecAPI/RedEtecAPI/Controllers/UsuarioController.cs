@@ -15,11 +15,15 @@ public class UsuarioController : Controller
 {
     private readonly UsuarioService _usuarioService;
     private readonly TokenJWTController _tokenJWTController;
+    private readonly MatriculaService _matriculaService;
+    private readonly CursoService _cursoService;
 
-    public UsuarioController(UsuarioService usuarioService, TokenJWTController tokenJWTController)
+    public UsuarioController(UsuarioService usuarioService, TokenJWTController tokenJWTController, MatriculaService matriculaService, CursoService cursoService)
     {
         _usuarioService = usuarioService;
         _tokenJWTController = tokenJWTController;
+        _matriculaService = matriculaService;
+        _cursoService = cursoService; 
     }
 
     [HttpGet]
@@ -123,5 +127,21 @@ public class UsuarioController : Controller
         }
 
         return usuario;
+    }
+
+    [Authorize]
+    [HttpGet("cursos")]
+    public async Task<ActionResult> GetCursosByUsuarioLogado()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var matricula = await _matriculaService.GetMatriculasByUsuarioId(Convert.ToInt32(userId));
+
+        var cursos = new List<Curso>();
+
+        foreach (var curso in matricula) 
+            cursos.Add(curso.Curso);
+
+        return Ok(cursos);
     }
 }
