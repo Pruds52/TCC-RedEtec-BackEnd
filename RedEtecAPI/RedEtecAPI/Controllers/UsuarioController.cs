@@ -115,18 +115,16 @@ public class UsuarioController : Controller
 
     [Authorize]
     [HttpGet("getusuario")]
-    public async Task<ActionResult<Usuario>> GetUsuarioByToken()
+    public async Task<ActionResult> GetUsuarioByToken()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         var usuario = await _usuarioService.GetByIdAsync(Convert.ToInt32(userId));
 
         if (usuario == null)
-        {
             return NotFound();
-        }
 
-        return usuario;
+        return Ok(usuario);
     }
 
     [Authorize]
