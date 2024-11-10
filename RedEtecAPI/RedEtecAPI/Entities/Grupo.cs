@@ -3,7 +3,7 @@
     public class Grupo
     {
         public int Id_Grupo { get; set; }
-        public int Id_Criador_Usuario { get; set; }
+        public int? Id_Criador_Usuario { get; set; }
         public string Nome_Grupo { get; set; }
         public string Descricao_Grupo { get; set; }
         public string Localizacao_Foto { get; set; }

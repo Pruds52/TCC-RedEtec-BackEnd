@@ -12,7 +12,7 @@ namespace RedEtecAPI.Mapping
             builder.HasKey(p => p.Id_Grupo);
 
             builder.Property(p => p.Id_Grupo).IsRequired();
-            builder.Property(p => p.Id_Criador_Usuario).IsRequired();
+            builder.Property(p => p.Id_Criador_Usuario);
             builder.Property(p => p.Nome_Grupo).IsRequired().HasMaxLength(50);
             builder.Property(p => p.Descricao_Grupo).HasMaxLength(50);
             builder.Property(p => p.Localizacao_Foto).HasMaxLength(255);
