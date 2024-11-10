@@ -1,4 +1,6 @@
-﻿namespace RedEtecAPI.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace RedEtecAPI.Entities
 {
     public class Usuario
     {
@@ -11,11 +13,17 @@
         public int Nivel_Acesso { get; set; }
         public int Deletado_Usuario { get; set; }
         public virtual ICollection<Matricula> Matriculas { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Postagem> Postagens { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Integrante_Grupo> Integrante_Grupos { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Mensagem_Privada> Mensagem_Privadas { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Mensagem_Grupo> Mensagem_Grupos { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Perfil> Perfis { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Grupo> Grupos { get; set; }
 
         public Usuario()

@@ -1,4 +1,4 @@
-﻿namespace RedEtecAPI.Entities
+﻿namespace RedEtecAPI.VM
 {
     public class Login
     {

@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Common;
 using RedEtecAPI.Controllers;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
+using RedEtecAPI.VM;
+using System.Collections.Frozen;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -46,13 +49,29 @@ public class UsuarioController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+    public async Task<ActionResult<Usuario>> PostUsuario(UsuarioViewModels usuarioViewModels)
     {
+        var usuario = new Usuario
+        {
+            Nome_Usuario = usuarioViewModels.Nome_Usuario,
+            CPF_Usuario = usuarioViewModels.CPF_Usuario,
+            Data_Nascimento_Usuario = usuarioViewModels.Data_Nascimento_Usuario,
+            Email_Usuario = usuarioViewModels.Email_Usuario,
+            Senha_Usuario = usuarioViewModels.Senha_Usuario,
+            Nivel_Acesso = usuarioViewModels.Nivel_Acesso,
+        };
+
         await _usuarioService.CreateAsync(usuario);
 
-        var token = _tokenJWTController.GerarTokenJWT(usuario.Id_Usuario);
+        var matricula = new Matricula
+        {
+            Id_Usuario = usuario.Id_Usuario,
+            Id_Curso = usuarioViewModels.Id_Curso
+        };
 
-        return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id_Usuario } , usuario);
+        await _matriculaService.CreateAsync(matricula);
+
+        return CreatedAtAction(nameof(GetUsuario), new { id = usuarioViewModels.Id_Usuario } , usuarioViewModels);
     }
 
     [HttpPut("{id}")]

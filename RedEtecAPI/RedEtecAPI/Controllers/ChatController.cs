@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
 using System.Security.Claims;
+using RedEtecAPI.VM;
 
 namespace RedEtecAPI.Controllers
 {
