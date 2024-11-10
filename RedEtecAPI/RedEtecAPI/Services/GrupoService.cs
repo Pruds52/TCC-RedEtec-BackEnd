@@ -1,4 +1,5 @@
-﻿using RedEtecAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RedEtecAPI.Data;
 using RedEtecAPI.Entities;
 
 namespace RedEtecAPI.Services
@@ -12,5 +13,9 @@ namespace RedEtecAPI.Services
             _context = context;
         }
 
+        public async Task<Grupo> GetGrupoByNome(string nome)
+        {
+            return await _context.Grupos.FirstOrDefaultAsync(p => p.Nome_Grupo == nome);
+        }
     }
 }

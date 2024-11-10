@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RedEtecAPI.Entities;
 using RedEtecAPI.Services;
+using System.Security.Claims;
 
 namespace RedEtecAPI.Controllers
 {
@@ -13,12 +15,14 @@ namespace RedEtecAPI.Controllers
         private readonly GrupoService _grupoService;
         private readonly TokenJWTController _tokenJwtController;
         private readonly UsuarioService _usuarioService;
+        private readonly MatriculaService _matriculaService;
 
-        public GrupoController(GrupoService grupoService, TokenJWTController tokenJWTController, UsuarioService usuarioService)
+        public GrupoController(GrupoService grupoService, TokenJWTController tokenJWTController, UsuarioService usuarioService, MatriculaService matriculaService)
         {
             _grupoService = grupoService;
             _tokenJwtController = tokenJWTController;
             _usuarioService = usuarioService;
+            _matriculaService = matriculaService;
         }
 
         [HttpGet("{id}")]
@@ -47,6 +51,19 @@ namespace RedEtecAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [Authorize]
+        [HttpGet("curso")]
+        public async Task<ActionResult> GetGrupoByCurso()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var matricula = await _matriculaService.GetMatriculasByUsuarioId(Convert.ToInt32(userId));
+
+            var grupo = await _grupoService.GetGrupoByNome(matricula.First().Curso.Nome_Curso);
+
+            return Ok(grupo);
         }
     }
 }
