@@ -14,19 +14,20 @@ namespace RedEtecAPI.Mapping
 
             builder.Property(p => p.Id_Anexo).IsRequired();
             builder.Property(p => p.Id_Postagem);
-            builder.Property(p => p.Id_Mensagens_Privada);
+            builder.Property(p => p.Id_Mensagem_Grupo);
             builder.Property(p => p.Nome_Arquivo).IsRequired().HasMaxLength(255);
             builder.Property(p => p.Tipo_Anexo).IsRequired().HasMaxLength(50);
             builder.Property(p => p.Caminho_Anexo).IsRequired().HasMaxLength(255);
             builder.Property(p => p.DataAnexo).IsRequired();
+            builder.Property(p => p.Deletado_Anexo).IsRequired();
 
             builder.HasOne(p => p.Postagem)
                 .WithMany(p => p.Anexos)
                 .HasForeignKey(p => p.Id_Postagem);
 
-            builder.HasOne(p => p.Mensagem_Privada)
+            builder.HasOne(p => p.Mensagem_Grupo)
                 .WithMany(p => p.Anexos)
-                .HasForeignKey(p => p.Id_Mensagens_Privada);
+                .HasForeignKey(p => p.Id_Mensagem_Grupo);
         }
     }
 

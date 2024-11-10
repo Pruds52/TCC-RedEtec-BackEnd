@@ -16,18 +16,11 @@ namespace RedEtecAPI.Mapping
             builder.Property(p => p.Legenda_Postagem);
             builder.Property(p => p.Localizacao_Midia_Postagem).HasMaxLength(256);
             builder.Property(p => p.Data_Postagem).IsRequired();
+            builder.Property(p => p.Deletado_Postagem).IsRequired();
 
             builder.HasOne(p => p.Usuario)
                 .WithMany(p => p.Postagens)
                 .HasForeignKey(p => p.Id_Usuario);
-
-            builder.HasMany(p => p.Curtidas)
-                .WithOne(p => p.Postagem)
-                .HasForeignKey(p => p.Id_Postagem);
-
-            builder.HasMany(p => p.Comentarios)
-               .WithOne(p => p.Postagem)
-               .HasForeignKey(p => p.Id_Postagem);
 
             builder.HasMany(p => p.Anexos)
                 .WithOne(p => p.Postagem)

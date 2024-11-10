@@ -17,6 +17,7 @@ namespace RedEtecAPI.Mapping
             builder.Property(p => p.Mensagem).IsRequired();
             builder.Property(p => p.Localizacao_Midia);
             builder.Property(p => p.Data_Mensagem).IsRequired();
+            builder.Property(p => p.Deletado_Mensagem_Privada).IsRequired();
 
             builder.HasOne(p => p.Usuario)
                 .WithMany(p => p.Mensagem_Privadas)
@@ -25,13 +26,6 @@ namespace RedEtecAPI.Mapping
             builder.HasOne(p => p.Usuario)
                 .WithMany(p => p.Mensagem_Privadas)
                 .HasForeignKey(p => p.Id_Usuario_Receptor);
-
-            builder.HasMany(p => p.Anexos)
-                .WithOne(p => p.Mensagem_Privada)
-                .HasForeignKey(p => p.Id_Mensagens_Privada);
-
-
         }
     }
-
 }

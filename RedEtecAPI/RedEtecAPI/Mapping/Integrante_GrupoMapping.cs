@@ -13,9 +13,9 @@ namespace RedEtecAPI.Mapping
 
             builder.Property(p => p.Id_Integrante_Grupo).IsRequired();
             builder.Property(p => p.Id_Grupo).IsRequired();
-            builder.Property(p => p.Id_Usuario);
-            builder.Property(p => p.Id_Professor);
+            builder.Property(p => p.Id_Usuario).IsRequired();
             builder.Property(p => p.Data_Entrada).IsRequired();
+            builder.Property(p => p.Deletado_Integrante_Grupo).IsRequired();
 
             builder.HasOne(p => p.Grupo)
                 .WithMany(p => p.Integrante_Grupos)
@@ -24,10 +24,6 @@ namespace RedEtecAPI.Mapping
             builder.HasOne(p => p.Usuario)
                 .WithMany(p => p.Integrante_Grupos)
                 .HasForeignKey(p => p.Id_Usuario);
-
-            builder.HasOne(p => p.Professor)
-                .WithMany(p => p.Integrante_Grupos)
-                .HasForeignKey(p => p.Id_Professor);
         }
     }
 }

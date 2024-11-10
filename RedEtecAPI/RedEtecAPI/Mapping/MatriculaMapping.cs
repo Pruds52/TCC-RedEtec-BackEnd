@@ -14,6 +14,7 @@ namespace RedEtecAPI.Mapping
             builder.Property(p => p.Id_Matricula).IsRequired();
             builder.Property(p => p.Id_Usuario).IsRequired();
             builder.Property(p => p.Id_Curso).IsRequired();
+            builder.Property(p => p.Deletado_Matricula).IsRequired();
 
             builder.HasOne(p => p.Usuario)
                 .WithMany(p => p.Matriculas)

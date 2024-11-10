@@ -12,7 +12,6 @@ builder.Services.AddDbContext<RedEtecAPIContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("RedEtecAPIContext"), new MySqlServerVersion(new Version(8, 0, 36))));
 
 builder.Services.AddScoped<UsuarioService>();
-builder.Services.AddScoped<ProfessorService>();
 builder.Services.AddScoped<PostagemService>();
 builder.Services.AddScoped<Mensagem_PrivadaService>();
 builder.Services.AddScoped<GrupoService>();
