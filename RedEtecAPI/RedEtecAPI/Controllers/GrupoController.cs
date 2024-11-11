@@ -16,16 +16,18 @@ namespace RedEtecAPI.Controllers
         private readonly TokenJWTController _tokenJwtController;
         private readonly UsuarioService _usuarioService;
         private readonly MatriculaService _matriculaService;
+        private readonly Integrante_GrupoService _integrante_GrupoService;
 
-        public GrupoController(GrupoService grupoService, TokenJWTController tokenJWTController, UsuarioService usuarioService, MatriculaService matriculaService)
+        public GrupoController(GrupoService grupoService, TokenJWTController tokenJWTController, UsuarioService usuarioService, MatriculaService matriculaService, Integrante_GrupoService integrante_GrupoService)
         {
             _grupoService = grupoService;
             _tokenJwtController = tokenJWTController;
             _usuarioService = usuarioService;
             _matriculaService = matriculaService;
+            _integrante_GrupoService = integrante_GrupoService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getgrupo/{id}")]
         public async Task<ActionResult<Grupo>> GetGrupoById(int id)
         {
             var grupo = await _grupoService.GetByIdAsync(id);
@@ -64,6 +66,14 @@ namespace RedEtecAPI.Controllers
             var grupo = await _grupoService.GetGrupoByNome(matricula.First().Curso.Nome_Curso);
 
             return Ok(grupo);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetIntegrantesGrupoByGrupoId(int id)
+        {
+            var integrantes = await _integrante_GrupoService.GetIntegrantesByGrupoId(id);
+
+            return Ok(integrantes);
         }
     }
 }
