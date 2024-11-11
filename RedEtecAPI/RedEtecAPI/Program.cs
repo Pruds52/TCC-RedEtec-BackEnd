@@ -19,6 +19,8 @@ builder.Services.AddScoped<TokenJWTController>();
 builder.Services.AddScoped<PerfilService>();
 builder.Services.AddScoped<CursoService>();
 builder.Services.AddScoped<MatriculaService>();
+builder.Services.AddScoped<Integrante_GrupoService>();
+builder.Services.AddScoped<Mensagem_GrupoService>();
 
 builder.Services.AddCors(options =>
 {
