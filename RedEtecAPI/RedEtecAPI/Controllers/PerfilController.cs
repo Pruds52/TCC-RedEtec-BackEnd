@@ -54,7 +54,7 @@ namespace RedEtecAPI.Controllers
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            perfil.Data_Atualização_Perfil = DateTime.Now;
+            perfil.Data_Atualizacao_Perfil = DateTime.Now;
 
             perfil.Id_Usuario = Convert.ToInt32(userId);
 
