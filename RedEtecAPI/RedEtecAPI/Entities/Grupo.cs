@@ -1,4 +1,6 @@
-﻿namespace RedEtecAPI.Entities
+﻿using Newtonsoft.Json;
+
+namespace RedEtecAPI.Entities
 {
     public class Grupo
     {
@@ -9,8 +11,11 @@
         public string Localizacao_Foto { get; set; }
         public DateTime Data_Criacao { get; set; }
         public int Deletado_Grupo { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Integrante_Grupo> Integrante_Grupos { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Mensagem_Grupo> Mensagem_Grupos { get; set; }
+        [JsonIgnore]
         public virtual Usuario Usuario { get; set; }
 
         public Grupo()

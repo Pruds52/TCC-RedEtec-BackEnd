@@ -47,7 +47,7 @@ namespace RedEtecAPI.Controllers
             {
                 await _grupoService.CreateAsync(grupo);
 
-                return CreatedAtAction(nameof(GetGrupoById), new { id = grupo.Id_Grupo });
+                return CreatedAtAction(nameof(GetGrupoById), new { id = grupo.Id_Grupo }, grupo);
             }
             catch (Exception ex)
             {

@@ -33,7 +33,7 @@ namespace RedEtecAPI.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> EnviarMensagemGrupo(ChatGrupo chatGrupo, IFormFile file)
+        public async Task<ActionResult> EnviarMensagemGrupo([FromBody] ChatGrupo chatGrupo, [FromForm] IFormFile file)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -53,9 +53,10 @@ namespace RedEtecAPI.Controllers
             var mensagemGrupo = new Mensagem_Grupo
             {
                 Id_Grupo = chatGrupo.Id_Grupo,
-                Id_Usuario_Emissor = chatGrupo.Id_Usuario_Emissor,
+                Id_Usuario_Emissor = Convert.ToInt32(userId),
                 Mensagem = chatGrupo.Mensagem,
                 Localizacao_Arquivo = chatGrupo.Localizacao_Arquivo,
+                Data_Enviada = DateTime.Now
             };
 
             await _mensagemGrupoService.CreateAsync(mensagemGrupo);

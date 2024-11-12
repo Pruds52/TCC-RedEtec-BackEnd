@@ -15,7 +15,7 @@ namespace RedEtecAPI.Mapping
             builder.Property(p => p.Id_Usuario).IsRequired();
             builder.Property(p => p.Foto_Perfil).HasMaxLength(256);
             builder.Property(p => p.Biografia_Perfil);
-            builder.Property(p => p.Data_Atualização_Perfil).IsRequired();
+            builder.Property(p => p.Data_Atualizacao_Perfil).IsRequired();
             builder.Property(p => p.Deletado_Perfil).IsRequired();
 
             builder.HasOne(p => p.Usuario)
