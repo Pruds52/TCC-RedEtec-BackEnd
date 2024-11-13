@@ -21,6 +21,7 @@ builder.Services.AddScoped<CursoService>();
 builder.Services.AddScoped<MatriculaService>();
 builder.Services.AddScoped<Integrante_GrupoService>();
 builder.Services.AddScoped<Mensagem_GrupoService>();
+builder.Services.AddScoped<AnexoService>();
 
 builder.Services.AddCors(options =>
 {
