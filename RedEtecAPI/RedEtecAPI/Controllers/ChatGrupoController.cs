@@ -119,5 +119,15 @@ namespace RedEtecAPI.Controllers
             return Ok("Mensagem e arquivo enviados com sucesso.");
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMensagem(int id)
+        {
+            var mensagem = await _mensagemGrupoService.GetByIdAsync(id);
+
+            await _mensagemGrupoService.DeleteAsync(mensagem);
+
+            return Ok("Mensagem excluída.");
+        }
+
     }
 }
