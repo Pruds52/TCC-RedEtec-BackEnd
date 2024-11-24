@@ -37,7 +37,7 @@ namespace RedEtecAPI.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Perfil>> SavePerfil([FromBody]Perfil perfil, [FromForm] IFormFile file)
+        public async Task<ActionResult<Perfil>> SavePerfil([FromForm]Perfil perfil, [FromForm] IFormFile file)
         {
             if (file != null && file.Length != 0)
             {
@@ -61,6 +61,17 @@ namespace RedEtecAPI.Controllers
             await _perfilService.CreateAsync(perfil);
 
             return Created();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Perfil>> GetPerfilByUsuarioId(int id)
+        {
+            var perfil = await _perfilService.GetPerfilByUsuarioId(id);
+
+            if (perfil == null)
+                return NotFound("Perfil não encontrado.");
+
+            return perfil;
         }
     }
 }

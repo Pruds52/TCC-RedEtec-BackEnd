@@ -15,7 +15,7 @@ namespace RedEtecAPI.Services
 
         public async Task<Perfil> GetPerfilByUsuarioId(int usuarioId)
         {
-            var perfil = await _context.Perfis.Where(p => p.Id_Usuario == usuarioId).FirstOrDefaultAsync();
+            var perfil = await _context.Perfis.Where(p => p.Id_Usuario == usuarioId).LastOrDefaultAsync();
 
             return perfil;
         }

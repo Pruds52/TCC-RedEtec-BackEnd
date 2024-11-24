@@ -71,9 +71,13 @@ app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); 
+app.UseStaticFiles(); // Habilita arquivos estáticos
+
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers(); // Mapeia as rotas dos controladores
 
 app.Run();
