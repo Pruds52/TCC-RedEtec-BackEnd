@@ -63,7 +63,7 @@ namespace RedEtecAPI.Controllers
             return Created();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getperfil/{id}")]
         public async Task<ActionResult<Perfil>> GetPerfilByUsuarioId(int id)
         {
             var perfil = await _perfilService.GetPerfilByUsuarioId(id);
