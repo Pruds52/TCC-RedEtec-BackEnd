@@ -17,12 +17,16 @@ namespace RedEtecAPI.Controllers
         private readonly Mensagem_PrivadaService _mensagemPrivadaService;
         private readonly TokenJWTController _tokenJwtController;
         private readonly UsuarioService _usuarioService;
+        private readonly CensuraController _censuraController;
+        private readonly Mensagem_CensuradaService _mensagemCensuradaService;
 
-        public ChatController(Mensagem_PrivadaService mensagemPrivadaService, TokenJWTController tokenJWTController, UsuarioService usuarioService)
+        public ChatController(Mensagem_PrivadaService mensagemPrivadaService, TokenJWTController tokenJWTController, UsuarioService usuarioService, CensuraController censuraController, Mensagem_CensuradaService mensagemCensuradaService)
         {
             _mensagemPrivadaService = mensagemPrivadaService;
             _tokenJwtController = tokenJWTController;
             _usuarioService = usuarioService;
+            _censuraController = censuraController;
+            _mensagemCensuradaService = mensagemCensuradaService;
         }
 
         [Authorize]
@@ -61,6 +65,23 @@ namespace RedEtecAPI.Controllers
         public async Task<ActionResult> EnviarMensagem([FromBody] Chat chat, [FromForm] IFormFile file)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var censura = _censuraController.CensurarMensagem(chat.Mensagem);
+
+            if (censura)
+            {
+                var mensagemCensurada = new Mensagem_Censurada
+                {
+                    Id_Usuario_Emissor = Convert.ToInt32(userId),
+                    Id_Usuario_Receptor = chat.ReceptorId,
+                    Mensagem = chat.Mensagem,
+                    Data_Enviada = DateTime.Now
+                };
+
+                await _mensagemCensuradaService.CreateAsync(mensagemCensurada);
+
+                return Ok("Mensagem censurada");
+            }
 
             if (file != null && file.Length != 0)
             {

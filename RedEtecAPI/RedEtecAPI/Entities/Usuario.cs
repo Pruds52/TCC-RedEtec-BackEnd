@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using NuGet.Protocol.Core.Types;
+using System.Text.Json.Serialization;
 
 namespace RedEtecAPI.Entities
 {
@@ -25,6 +26,8 @@ namespace RedEtecAPI.Entities
         public virtual ICollection<Perfil> Perfis { get; set; }
         [JsonIgnore]
         public virtual ICollection<Grupo> Grupos { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Mensagem_Censurada> Mensagem_Censuradas { get; set; }
 
         public Usuario()
         {
@@ -35,6 +38,7 @@ namespace RedEtecAPI.Entities
             Mensagem_Grupos = new List<Mensagem_Grupo>();
             Perfis = new List<Perfil>();
             Grupos = new List<Grupo>();
+            Mensagem_Censuradas = new List<Mensagem_Censurada>();
         }
     }
 }

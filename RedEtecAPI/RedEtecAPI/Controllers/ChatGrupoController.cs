@@ -8,6 +8,7 @@ using RedEtecAPI.VM;
 using System.Security.Claims;
 using System;
 using MongoDB.Bson;
+using Amazon.Runtime;
 
 namespace RedEtecAPI.Controllers
 {
@@ -18,12 +19,16 @@ namespace RedEtecAPI.Controllers
         private readonly Mensagem_GrupoService _mensagemGrupoService;
         private readonly GrupoService _grupoService;
         private readonly AnexoService _anexoService;
+        private readonly CensuraController _censuraController;
+        private readonly Mensagem_CensuradaService _mensagemCensuradaService;
 
-        public ChatGrupoController(Mensagem_GrupoService mensagem_GrupoService, GrupoService grupoService, AnexoService anexoService)
+        public ChatGrupoController(Mensagem_GrupoService mensagemGrupoService, GrupoService grupoService, AnexoService anexoService, CensuraController censuraController, Mensagem_CensuradaService mensagemCensuradaService)
         {
-            _mensagemGrupoService = mensagem_GrupoService;
+            _mensagemGrupoService = mensagemGrupoService;
             _grupoService = grupoService;
             _anexoService = anexoService;
+            _censuraController = censuraController;
+            _mensagemCensuradaService = mensagemCensuradaService;
         }
 
         [HttpGet("{grupoId}")]
@@ -79,6 +84,23 @@ namespace RedEtecAPI.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            var censura = _censuraController.CensurarMensagem(chatGrupo.Mensagem);
+
+            if (censura)
+            {
+                var mensagemCensurada = new Mensagem_Censurada
+                {
+                    Id_Usuario_Emissor = Convert.ToInt32(userId),
+                    Id_Grupo = chatGrupo.Id_Grupo,
+                    Mensagem = chatGrupo.Mensagem,
+                    Data_Enviada = DateTime.Now
+                };
+
+                await _mensagemCensuradaService.CreateAsync(mensagemCensurada);
+
+                return Ok("Mensagem censurada");
+            }
+
             if (file != null && file.Length > 0)
             {
                 var client = new MongoClient("mongodb+srv://gabrielribas:051322@cluster0.4eyh8.mongodb.net/");
@@ -118,6 +140,8 @@ namespace RedEtecAPI.Controllers
 
             return Ok("Mensagem e arquivo enviados com sucesso.");
         }
+
+        [HttpPost("enviarimagem")]
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMensagem(int id)

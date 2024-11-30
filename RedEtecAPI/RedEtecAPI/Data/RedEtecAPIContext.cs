@@ -20,6 +20,7 @@ namespace RedEtecAPI.Data
         public DbSet<Postagem> Postagens { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Mensagem_Grupo> Mensagem_Grupos { get; set; }
+        public DbSet<Mensagem_Censurada> Mensagem_Censuradas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,8 +34,7 @@ namespace RedEtecAPI.Data
             modelBuilder.ApplyConfiguration(new PostagemMapping());
             modelBuilder.ApplyConfiguration(new UsuarioMapping());
             modelBuilder.ApplyConfiguration(new Mensagem_GrupoMapping());
+            modelBuilder.ApplyConfiguration(new Mensagem_CensuradaMapping());
         }
     }
-
-
 }

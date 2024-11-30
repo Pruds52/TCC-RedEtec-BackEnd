@@ -15,6 +15,7 @@ namespace RedEtecAPI.Entities
         public virtual ICollection<Integrante_Grupo> Integrante_Grupos { get; set; }
         [JsonIgnore]
         public virtual ICollection<Mensagem_Grupo> Mensagem_Grupos { get; set; }
+        public virtual ICollection<Mensagem_Censurada> Mensagem_Censuradas { get; set; }
         [JsonIgnore]
         public virtual Usuario Usuario { get; set; }
 
@@ -22,6 +23,7 @@ namespace RedEtecAPI.Entities
         {
             Integrante_Grupos = new List<Integrante_Grupo>();
             Mensagem_Grupos = new List<Mensagem_Grupo>();
+            Mensagem_Censuradas = new List<Mensagem_Censurada>();
         }
     }
 }
