@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System;
 using MongoDB.Bson;
 using Amazon.Runtime;
+using Microsoft.OpenApi.Validations;
 
 namespace RedEtecAPI.Controllers
 {
@@ -40,41 +41,47 @@ namespace RedEtecAPI.Controllers
             var database = client.GetDatabase("Testes-TCC");
             var gridFS = new GridFSBucket(database);
 
-            var mensagensComAnexos = mensagens.Select(async mensagem =>
-            {
-                if (!string.IsNullOrEmpty(mensagem.Localizacao_Arquivo))
-                {
-                    var fileId = new ObjectId(mensagem.Localizacao_Arquivo);
-                    var downloadStream = await gridFS.OpenDownloadStreamAsync(fileId);
-                    var fileUrl = mensagem.Localizacao_Arquivo;
+            var mensagemLista = new List<ChatGrupo>();
 
-                    return new
+            foreach (var item in mensagens)
+            {
+                if (!string.IsNullOrEmpty(item.Localizacao_Arquivo))
+                {
+                    var fileId = new ObjectId(item.Localizacao_Arquivo);
+                    var downloadStream = await gridFS.OpenDownloadStreamAsync(fileId);
+                    var fileUrl = item.Localizacao_Arquivo;
+
+                    var mensagem = new ChatGrupo
                     {
-                        mensagem.Id_Mensagem_Grupo,
-                        mensagem.Id_Grupo,
-                        mensagem.Id_Usuario_Emissor,
-                        mensagem.Mensagem,
-                        mensagem.Data_Enviada,
-                        AnexoUrl = fileUrl,
+                        Id_Grupo = item.Id_Grupo,
+                        Id_Usuario_Emissor = item.Id_Usuario_Emissor,
+                        Mensagem = item.Mensagem,
+                        Data_Enviada = item.Data_Enviada,
+                        Localizacao_Arquivo = fileUrl,
                         TipoAnexo = downloadStream.FileInfo.Metadata.Contains("contentType") ? downloadStream.FileInfo.Metadata["contentType"].AsString : null
                     };
+
+                    mensagemLista.Add(mensagem);
                 }
 
-                return new
+                else
                 {
-                    mensagem.Id_Mensagem_Grupo,
-                    mensagem.Id_Grupo,
-                    mensagem.Id_Usuario_Emissor,
-                    mensagem.Mensagem,
-                    mensagem.Data_Enviada,
-                    AnexoUrl = (string)null,
-                    TipoAnexo = (string)null
-                };
-            });
+                    var mensagem = new ChatGrupo
+                    {
+                        Id_Grupo = item.Id_Grupo,
+                        Id_Usuario_Emissor = item.Id_Usuario_Emissor,
+                        Mensagem = item.Mensagem,
+                        Data_Enviada = item.Data_Enviada,
+                        Localizacao_Arquivo = null,
+                        TipoAnexo = null
+                    };
 
-            var resultados = await Task.WhenAll(mensagensComAnexos);
+                    mensagemLista.Add(mensagem);
+                }
+            }
 
-            return Ok(resultados);
+
+            return Ok(mensagemLista);
         }
 
 

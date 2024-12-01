@@ -14,7 +14,7 @@ namespace RedEtecAPI.Mapping
             builder.Property(p => p.Id_Mensagem_Grupo).IsRequired();
             builder.Property(p => p.Id_Grupo).IsRequired();
             builder.Property(p => p.Id_Usuario_Emissor).IsRequired();
-            builder.Property(p => p.Mensagem).IsRequired();
+            builder.Property(p => p.Mensagem).HasMaxLength(256);
             builder.Property(p => p.Localizacao_Arquivo);
             builder.Property(p => p.Data_Enviada).IsRequired();
             builder.Property(p => p.Deletado_Mensagem_Grupo).IsRequired();
