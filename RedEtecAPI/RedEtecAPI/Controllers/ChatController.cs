@@ -66,21 +66,24 @@ namespace RedEtecAPI.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var censura = _censuraController.CensurarMensagem(chat.Mensagem);
-
-            if (censura)
+            if (!string.IsNullOrEmpty(chat.Mensagem))
             {
-                var mensagemCensurada = new Mensagem_Censurada
+                var censura = _censuraController.CensurarMensagem(chat.Mensagem);
+
+                if (censura)
                 {
-                    Id_Usuario_Emissor = Convert.ToInt32(userId),
-                    Id_Usuario_Receptor = chat.ReceptorId,
-                    Mensagem = chat.Mensagem,
-                    Data_Enviada = DateTime.Now
-                };
+                    var mensagemCensurada = new Mensagem_Censurada
+                    {
+                        Id_Usuario_Emissor = Convert.ToInt32(userId),
+                        Id_Usuario_Receptor = chat.ReceptorId,
+                        Mensagem = chat.Mensagem,
+                        Data_Enviada = DateTime.Now
+                    };
 
-                await _mensagemCensuradaService.CreateAsync(mensagemCensurada);
+                    await _mensagemCensuradaService.CreateAsync(mensagemCensurada);
 
-                return Ok("Mensagem censurada");
+                    return Ok("Mensagem censurada");
+                }
             }
 
             if (file != null && file.Length != 0)
