@@ -5,11 +5,6 @@ namespace RedEtecAPI.Controllers
 {
     public class CensuraController : Controller
     {
-        public CensuraController() 
-        { 
-
-        }
-
         public bool CensurarMensagem(string mensagem)
         {
             var censuraList = new CensuraList();

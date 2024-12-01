@@ -149,8 +149,6 @@ namespace RedEtecAPI.Controllers
             return Ok("Mensagem e arquivo enviados com sucesso.");
         }
 
-        [HttpPost("enviarimagem")]
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMensagem(int id)
         {
