@@ -23,6 +23,7 @@ builder.Services.AddScoped<Integrante_GrupoService>();
 builder.Services.AddScoped<Mensagem_GrupoService>();
 builder.Services.AddScoped<AnexoService>();
 builder.Services.AddScoped<Mensagem_CensuradaService>();
+builder.Services.AddScoped<CensuraController>();
 
 builder.Services.AddCors(options =>
 {
