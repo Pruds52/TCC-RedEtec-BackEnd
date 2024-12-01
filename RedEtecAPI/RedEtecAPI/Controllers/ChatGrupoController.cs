@@ -58,7 +58,6 @@ namespace RedEtecAPI.Controllers
                         Mensagem = item.Mensagem,
                         Data_Enviada = item.Data_Enviada,
                         Localizacao_Arquivo = fileUrl,
-                        TipoAnexo = downloadStream.FileInfo.Metadata.Contains("contentType") ? downloadStream.FileInfo.Metadata["contentType"].AsString : null
                     };
 
                     mensagemLista.Add(mensagem);
@@ -73,7 +72,6 @@ namespace RedEtecAPI.Controllers
                         Mensagem = item.Mensagem,
                         Data_Enviada = item.Data_Enviada,
                         Localizacao_Arquivo = null,
-                        TipoAnexo = null
                     };
 
                     mensagemLista.Add(mensagem);
@@ -91,21 +89,24 @@ namespace RedEtecAPI.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var censura = _censuraController.CensurarMensagem(chatGrupo.Mensagem);
-
-            if (censura)
+            if (!string.IsNullOrEmpty(chatGrupo.Mensagem))
             {
-                var mensagemCensurada = new Mensagem_Censurada
+                var censura = _censuraController.CensurarMensagem(chatGrupo.Mensagem);
+
+                if (censura)
                 {
-                    Id_Usuario_Emissor = Convert.ToInt32(userId),
-                    Id_Grupo = chatGrupo.Id_Grupo,
-                    Mensagem = chatGrupo.Mensagem,
-                    Data_Enviada = DateTime.Now
-                };
+                    var mensagemCensurada = new Mensagem_Censurada
+                    {
+                        Id_Usuario_Emissor = Convert.ToInt32(userId),
+                        Id_Grupo = chatGrupo.Id_Grupo,
+                        Mensagem = chatGrupo.Mensagem,
+                        Data_Enviada = DateTime.Now
+                    };
 
-                await _mensagemCensuradaService.CreateAsync(mensagemCensurada);
+                    await _mensagemCensuradaService.CreateAsync(mensagemCensurada);
 
-                return Ok("Mensagem censurada");
+                    return Ok("Mensagem censurada");
+                }
             }
 
             if (file != null && file.Length > 0)
