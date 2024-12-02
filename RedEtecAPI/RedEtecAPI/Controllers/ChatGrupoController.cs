@@ -53,6 +53,7 @@ namespace RedEtecAPI.Controllers
 
                     var mensagem = new ChatGrupo
                     {
+                        Id_Mensagem_Grupo = item.Id_Mensagem_Grupo,
                         Id_Grupo = item.Id_Grupo,
                         Id_Usuario_Emissor = item.Id_Usuario_Emissor,
                         Mensagem = item.Mensagem,
@@ -67,6 +68,7 @@ namespace RedEtecAPI.Controllers
                 {
                     var mensagem = new ChatGrupo
                     {
+                        Id_Mensagem_Grupo = item.Id_Mensagem_Grupo,
                         Id_Grupo = item.Id_Grupo,
                         Id_Usuario_Emissor = item.Id_Usuario_Emissor,
                         Mensagem = item.Mensagem,

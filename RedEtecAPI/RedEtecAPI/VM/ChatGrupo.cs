@@ -4,6 +4,7 @@ namespace RedEtecAPI.VM
 {
     public class ChatGrupo
     {
+        public int Id_Mensagem_Grupo { get; set; }
         public int Id_Grupo { get; set; }
         public int Id_Usuario_Emissor { get; set; }
         public string Mensagem { get; set; }
