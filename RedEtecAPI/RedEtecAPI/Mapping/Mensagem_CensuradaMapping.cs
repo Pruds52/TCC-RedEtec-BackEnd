@@ -8,7 +8,7 @@ namespace RedEtecAPI.Mapping
     {
         public void Configure(EntityTypeBuilder<Mensagem_Censurada> builder)
         {
-            builder.ToTable("Mensagem_Censuarada");
+            builder.ToTable("Mensagem_Censurada");
             builder.HasKey(p => p.Id_Mensagem_Censurada);
 
             builder.Property(p => p.Id_Mensagem_Censurada).IsRequired();
