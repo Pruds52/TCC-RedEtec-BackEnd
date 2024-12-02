@@ -82,7 +82,7 @@ namespace RedEtecAPI.Controllers
 
                     await _mensagemCensuradaService.CreateAsync(mensagemCensurada);
 
-                    return Ok("Mensagem censurada");
+                    return BadRequest("Mensagem censurada");
                 }
             }
 
